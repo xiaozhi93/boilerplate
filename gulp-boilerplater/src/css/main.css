@@ -1,0 +1,36 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, img, button, textarea, p, blockquote, th, td {
+  margin: 0;
+  padding: 0; }
+
+body {
+  font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif;
+  font-size: 14px; }
+
+img {
+  border: 0; }
+
+a {
+  text-decoration: none;
+  color: black; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.clear {
+  clear: both; }
+
+.b {
+  border: 1px solid red; }
+
+/**
+ * 
+ */
+.container {
+  width: 1000px;
+  margin: 0px auto; }
+
+.hello {
+  color: #ff0; }

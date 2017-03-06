@@ -1,0 +1,4 @@
+1.该目录有html
+2.css文件夹（包含各min.css,及合并后的css）
+3.js文件夹（包含各min.js,及合并后的js)
+4.images(包含压缩后的图片)
