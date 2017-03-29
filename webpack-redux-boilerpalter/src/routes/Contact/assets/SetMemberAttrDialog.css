@@ -1,0 +1,55 @@
+.main{
+    font-size: 14px;
+    line-height: 1.5;
+    color:#666;
+    padding: 0 20px;
+}
+.tabCont{
+    display: none;
+}
+.tabContTitle{
+    margin: 5px 0;
+}
+.defaultAttr{
+    border-bottom: 1px solid #ddd;
+}
+.defaultAttr, .customAttr{
+    padding: 5px 15px;
+}
+.defaultAttr li{
+    display: inline-block;
+    width: 20%;
+    margin: 10px 0;
+}
+.defaultAttr input[type=checkbox], .customAttr input[type=checkbox]{
+    margin-right: 5px;
+    vertical-align: -2px;
+}
+
+.customAttr li{
+    display: inline-block;
+    min-width: 20%;
+    margin: 10px 0;
+}
+.customAttr li a{
+    color: rgb(42, 126, 238);
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+.addAttr{
+    margin-top: 20px;
+    padding-left: 15px;
+}
+.addAttr input{
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+.addAttr a{
+    margin-left: 15px;
+    color: rgb(42, 126, 238);
+    cursor: pointer;
+}
+.active{
+    display: block;
+}

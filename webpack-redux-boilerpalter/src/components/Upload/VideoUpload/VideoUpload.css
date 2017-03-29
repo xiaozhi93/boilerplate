@@ -1,0 +1,116 @@
+/**
+*
+* @author Rainoy <email:rainoy.me@gmail.com>
+* @version v1.0.0
+*/
+.wrap{
+    padding: 10px;
+}
+.uploadWrap{
+    display: none;
+}
+.uploadWrap.active{
+    display: inline-block;
+}
+.imgWrap{
+    display: inline-block;
+}
+.imgWrap li{
+    list-style: none;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    position: relative;
+}
+.imgWrap li img{
+    width: 100%;
+    height: 100%;
+}
+.del{
+    position: absolute;
+    right: -9px;
+    top: -9px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    box-sizing: content-box;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    background-color: rgb(209, 12, 12);
+}
+.del i{
+    font-size: 20px;
+}
+.add{
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    background: url(../../../static/images/upload.png) top left no-repeat;
+}
+.add:hover{
+    background: url(../../../static/images/upload.png) 0px -80px no-repeat;
+}
+.tips{
+    color: #ff9900;
+    line-height: 26px;
+}
+
+.progressBar{
+    display: none;
+    height: 60px;
+    width: 160px;
+    position: absolute;
+    margin-left: 15px;
+}
+.progressBar.active{
+    display: inline-block;
+}
+.progressTips{
+    line-height: 38px;
+    text-align: center;
+}
+.progress{
+    width: 100%;
+    height: 10px;
+    border: 1px solid #ddd;
+}
+.pointer{
+    background-color: #eaeaea;
+    width: 0;
+    height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

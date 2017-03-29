@@ -1,0 +1,96 @@
+/**
+*
+* @author Rainoy <email:rainoy.me@gmail.com>
+* @version v1.0.0
+*/
+.wrap{
+    padding: 10px;
+}
+.title, .btn, .tips, .loading{
+    line-height: 40px;
+    display: inline-block;
+    float: left;
+}
+.title{
+    font-size: 14px;
+    color: #333;
+    width: 80px;
+}
+.btn{
+    background: url(../../../static/images/upload.png) top center / 40px no-repeat;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.btn:hover{
+    background: url(../../../static/images/upload.png) 0px -53px / 40px no-repeat;
+}
+.tips{
+    margin-left: 12px;
+    font-size: 12px;
+    color: #ff0000;
+}
+.list{
+    padding: 10px 0 0 80px;
+}
+.list li{
+    line-height: 26px;
+    font-size: 12px;
+}
+.list li img{
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    vertical-align: -2px;
+}
+.list li i{
+    margin-left: 5px;
+    color: rgb(153, 152, 150);
+    cursor: pointer;
+}
+
+.uploadWrap{
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    float: left;
+}
+.loading{
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    text-align: center;
+    color: rgb(153, 152, 150);
+    position: absolute;
+    left: 130px;
+    background-color: rgba(0, 0, 0, .1);
+    display: none;
+}
+.loading.active{
+    display: block;
+}
+.loading span{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    border-radius: 50%;
+    animation: loading 2s linear infinite;
+}
+.loading i{
+    font-size: 20px;
+}
+
+@keyframes loading {
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+
+
+
+
+
+
+
+/**/

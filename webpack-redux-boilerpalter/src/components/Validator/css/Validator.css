@@ -1,0 +1,45 @@
+.formGroup{
+    position: relative;
+}
+.displayIb{
+    display: inline-block;
+}
+.formGroup:after {content: '';display: block;clear: both;height: 0;visibility: hidden;font-size: 0;line-height: 0;}
+.formGroup {zoom: 1;}
+.formLabel{
+    float: left;
+    width: 160px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    padding-right: 8px;
+    text-align: right;
+}
+.formLabel .require{
+    color: #ff0000;
+    font-size: 13px;
+}
+
+.formError{
+    color: #ff0000;
+    font-size: 13px;
+    min-width: 80px;
+}
+.formError.bottom{
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+.formError.right{
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    margin-top: -10px;
+    margin-left: 10px;
+}
+.formTip{
+    position: absolute;
+    bottom: -25px;
+    right: -2px;
+    color: #999;
+}

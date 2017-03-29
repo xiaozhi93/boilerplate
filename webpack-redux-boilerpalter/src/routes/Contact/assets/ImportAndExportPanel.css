@@ -1,0 +1,77 @@
+.main{
+
+}
+.title{
+    font-size: 18px;
+    text-align: center;
+    margin: 20px 0;
+}
+.import{
+    margin: 25px 100px;
+}
+.des{
+    margin: 15px 0;
+}
+.tips{
+    margin: 15px 0;
+}
+.btn{
+    color: #ff9900;
+    cursor: pointer;
+}
+.start{
+    text-align: center;
+    margin-top: 30px;
+}
+.export{
+    width: 60%;
+    margin: 0 auto;
+}
+.warn{
+    color: #999;
+    margin: 30px 0 15px;
+    text-align: center;
+}
+.fileName{
+    line-height: 32px;
+    display: inline-block;
+    position: absolute;
+    margin-left: 20px;
+}
+
+
+.inputWrap{
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.inputWrap label{
+    flex-grow: 0;
+    width: 100px;
+    text-align: right;
+}
+.inputWrap input{
+    flex: 1;
+    border: 1px solid #eaeaea;
+    height: 30px;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+/**
+ * dialog
+ */
+.dialogTitle{
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+    font-size: 16px;
+}
+.dialog_body{
+    margin-top: 15px;
+}
+
+.importStateProgress{
+    font-size: 18px;
+    margin-top: 10px;
+}

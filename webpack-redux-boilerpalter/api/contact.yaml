@@ -1,0 +1,820 @@
+swagger: '2.0'
+info:
+  title: 微加PC后台通讯录API
+  description: |
+    通讯录页面的数据;
+    其中涉及到Excel下载的,
+    由于是直接访问下载地址不写API(通讯录模板、通讯录同步出错的Excel)
+  version: "0.0.1"
+host: 127.0.0.1:8080
+schemes:
+  - http
+basePath: /api
+produces:
+  - application/json
+paths:
+  /department:
+    get:
+      summary: 获取部门列表
+      parameters:
+        - name: pid
+          in: query
+          type: integer
+          description: |
+            父部门ID;
+            当部门为顶级部门时pid为空
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: array
+                description: |
+                  返回的部门列表对象;
+                  当pid为空时，返回顶级部门和其子部门;
+                  当用pid时，只返回子部门列表
+                items:
+                  required:
+                    - id
+                    - name
+                    - isLeaf
+                    - fullName
+                  properties:
+                    id:
+                      type: integer
+                      description: 部门ID
+                    name:
+                      type: string
+                      description: 部门名称
+                    isLeaf:
+                      type: boolean
+                      description: 该部门是否为叶子节点
+                    fullName:
+                      type: string
+                      description: 该部门的完整部门路径
+                    children:
+                      type: array
+                      description: |
+                        当前部门下的子部门;
+                        只有请求顶级部门时才返回该字段
+                      items:
+                        required:
+                          - id
+                          - name
+                          - isLeaf
+                          - fullName
+                        properties:
+                          id:
+                            type: integer
+                            description: 部门ID
+                          name:
+                            type: string
+                            description: 部门名称
+                          isLeaf:
+                            type: boolean
+                            description: 该部门是否为叶子节点
+                          fullName:
+                            type: string
+                            description: 该部门的完整部门路径
+        500:
+          description: 程序报错
+
+  /departmentInsert:
+    post:
+      summary: 添加和编辑部门
+      description: |
+        添加部门时id为空;
+        编辑部门时id不为空
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          description: 部门ID(添加时为空)
+        - name: name
+          in: query
+          required: true
+          description: 部门名称
+          type: string
+        - name: pid
+          in: query
+          required: true
+          type: integer
+          description: 部门所属的父部门ID
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - id
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              id:
+                type: integer
+                description: 生成的部门ID
+        500:
+          description: 程序报错
+          
+  /departmentInfo:
+    get:
+      summary: 获取部门详情
+      description: |
+        部门内子部门的个数;
+        部门内人员的个数
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          required: true
+          description: 部门ID
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: object
+                required:
+                  - childrenDepartment
+                  - person
+                properties:
+                  childrenDepartment:
+                    type: integer
+                    description: 子部门数量
+                  person:
+                    type: integer
+                    description: 人员的数量
+        500:
+          description: 程序报错
+
+  /departmentDelete:
+    post:
+      summary: 删除部门
+      description: |
+        删除没有成员及子部门的部门时force为false;
+        删除没有子部门但有成员时的部门时force为true
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          required: true
+          description: 需要删除的部门ID
+        - name: force
+          in: query
+          type: boolean
+          description: 是否强制删除该部门(当部门下有成员时)
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /departmentMove:
+    post:
+      summary: 移动部门
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          required: true
+          description: 需要移动的部门ID
+        - name: nextId
+          in: query
+          type: integer
+          required: true
+          description: 移动后该部门的下一个部门ID(为空就代表排到了末尾)
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /departmentPermission:
+    get:
+      summary: 获取部门的可见范围
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          required: true
+          description: 需要获取权限的部门ID
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: array
+                description: 可见的部门ID数组
+                items:
+                  type: integer
+        500:
+          description: 程序出错
+
+  /departPermissionChange:
+    post:
+      summary: 修改部门的可见范围
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          required: true
+          description: 需要修改权限的部门ID
+        - name: ids
+          in: body
+          description: 修改后可见的部门对象
+          schema:
+            type: object
+            description: 修改后可见的部门ID数组
+            properties:
+              ids:
+                type: array
+                items:
+                  type: integer
+          required: true
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /person:
+    get:
+      summary: 获取人员列表
+      parameters:
+        - name: departId
+          in: query
+          type: integer
+          description: |
+            人员所在的部门ID
+            未分配部门和离职传特定的ID
+        - name: searchType
+          required: true
+          in: query
+          type: string
+          description: |
+            搜索类型
+            00 - 全部成员
+            01 - 已关注
+            02 - 未关注
+        - name: keyWord
+          in: query
+          type: string
+          description: 搜索关键词
+        - name: pageSize
+          in: query
+          required: true
+          type: integer
+          description: 请求列表分页条数
+        - name: pageIndex
+          in: query
+          required: true
+          type: integer
+          description: 请求列表页码
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: object
+                description: 人员列表对象
+                required:
+                  - departName
+                  - totleCount
+                  - list
+                properties:
+                  departName:
+                    type: string
+                    description: 部门名称
+                  totleCount:
+                    type: integer
+                    description: 结果列表的总条数
+                  list:
+                    type: array
+                    items:
+                      required:
+                        - id
+                        - name
+                        - mobile
+                        - sex
+                        - hidden
+                      properties:
+                        id:
+                          type: integer
+                          description: 人员ID
+                        name:
+                          type: string
+                          description: 人员姓名
+                        mobile:
+                          type: integer
+                          description: 手机号码
+                        sex:
+                          type: string
+                          description: 性别
+                        headImage:
+                          type: string
+                          description: 头像
+                        department:
+                          type: string
+                          description: 所属部门
+                        email:
+                          type: string
+                          description: 电子邮箱
+                        weChatId:
+                          type: string
+                          description: 微信号
+                        job:
+                          type: string
+                          description: 职位
+                        birthday:
+                          type: string
+                          description: 生日
+                        employed:
+                          type: string
+                          description: 入职日期
+                        hidden:
+                          type: boolean
+                          description: 是否隐藏
+                        company:
+                          type: string
+                          description: 所属公司名称
+        500:
+          description: 程序报错
+
+  /personInsert:
+    post:
+      summary: 添加成员和修改成员
+      parameters:
+        - name: object
+          in: body
+          description: POST时的对象
+          schema:
+            type: object
+            required:
+              - name
+              - mobile
+              - sex
+              - departmentIds
+              - notifyType
+              - hidden
+            properties:
+              id:
+                type: integer
+                description: |
+                  人员ID;
+                  添加时为空
+              name:
+                type: string
+                description: 姓名
+              mobile:
+                type: integer
+                description: 手机号码
+              sex:
+                type: string
+                description: |
+                  性别;
+                  00 - 男
+                  01 - 女
+              email:
+                type: string
+                description: 电子邮箱
+              weChatId:
+                type: string
+                description: 微信ID
+              departmentIds:
+                type: string
+                description: 所属部门
+              job:
+                type: string
+                description: 职位
+              birthday:
+                type: string
+                description: 生日
+              notifyType:
+                type: string
+                description: |
+                  生日提醒类型;
+                  00 - 阳历
+                  01 - 阴历
+              employed:
+                type: string
+                description: 入职日期
+              hidden:
+                type: boolean
+                description: 是否隐藏
+              extensions:
+                type: array
+                description: 自定义字段
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      description: 自定义字段的ID
+                    name:
+                      type: string
+                      description: 自定义字段的名称
+                    value:
+                      type: string
+                      description: 自定义字段的值
+          required: true
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /personDelete:
+    post:
+      summary: 人员删除
+      description: 单个删除和多选删除
+      parameters:
+        - name: object
+          in: body
+          description: 需要删除的人员对象
+          schema:
+            type: object
+            description: 删除人员的ID数组
+            properties:
+              ids:
+                type: array
+                items:
+                  type: integer
+          required: true
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /personFire:
+    post:
+      summary: 人员离职
+      description: 单个离职和多选离职
+      parameters:
+        - name: object
+          in: body
+          description: 需要离职的人员对象
+          schema:
+            type: object
+            description: 离职人员的ID数组
+            properties:
+              ids:
+                type: array
+                items:
+                  type: integer
+          required: true
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /personMove:
+    post:
+      summary: 移动成员
+      description: 单个移动和多选移动
+      parameters:
+        - name: object
+          in: body
+          description: 需要移动的人员对象
+          schema:
+            type: object
+            description: 移动的人员的ID数组
+            properties:
+              ids:
+                type: array
+                items:
+                  type: integer
+          required: true
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /extension:
+    get:
+      summary: 获取显示设置中的字段
+      description: 获取人员列表的固定字段和自定自定义字段
+      responses: 
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: object
+                required:
+                  - fixed
+                  - expand
+                properties:
+                  fixed:
+                    $ref: '#/definitions/attribute'
+                  expand:
+                    $ref: '#/definitions/attribute'
+        500:
+          description: 程序出错
+
+  /extensionInsert:
+    post:
+      summary: 添加自定义字段
+      parameters:
+        - name: name
+          in: query
+          type: string
+          required: true
+          description: 自定义字段的名称
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - id
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              id:
+                type: integer
+                description: 返回的字段所属ID
+        500:
+          description: 程序出错
+
+  /extensionDelete:
+    post:
+      summary: 删除自定义字段
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          required: true
+          description: 自定义字段的ID
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /extensionShow:
+    post:
+      summary: 显隐后台和微信端的字段
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          required: true
+          description: 字段的ID
+        - name: showType
+          in: query
+          type: string
+          description: |
+            字段显示类型;
+            0 - 不显示
+            1 - 显示
+        - name: whereShow
+          in: query
+          type: string
+          description: |
+            字段所属位置;
+            0 - 后台
+            1 - 微信端
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /import:
+    post:
+      summary: 导入通讯录
+      parameters:
+        - name: file
+          in: formData
+          description: 上传的Excel
+          required: true
+          type: file
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+  
+  /importLatest:
+    get:
+      summary: 查询通讯录导入的情况
+      description: |
+        若当次返回的finished为false
+        则继续发送该请求
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: object
+                required:
+                  - syncMsg
+                  - finished
+                properties:
+                  syncMsg:
+                    type: string
+                    description: 程序返回的导入信息
+                  finished:
+                    type: boolean
+                    description: 是否已完成通讯录导入
+        500:
+          description: 程序出错
+
+  /sync:
+    post:
+      summary: 同步通讯录请求
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/default'
+        500:
+          description: 程序出错
+
+  /syncLatest:
+    get:
+      summary: 查询通讯录同步的情况
+      description: |
+        若当次返回的finished为false
+        则继续发送该请求
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: object
+                required:
+                  - syncMsg
+                  - finished
+                properties:
+                  syncMsg:
+                    type: string
+                    description: 程序返回的同步信息
+                  finished:
+                    type: boolean
+                    description: 是否已完成通讯录同步
+        500:
+          description: 程序出错
+
+
+definitions:
+  default:
+    type: object
+    required:
+      - msg
+      - success
+    properties:
+      msg:
+        type: string
+        description: 程序返回的信息(null)
+      success:
+        type: boolean
+        description: 程序返回的状态
+
+  attribute:
+    type: array
+    description: |
+      字段类型
+      fixed为固定字段
+      expand为用户可修改字段
+    items:
+      type: object
+      required:
+      - id
+      - name
+      - readOnly
+      - manageShow
+      - weChatShow
+      properties:
+        id:
+         type: integer
+         description: 字段ID
+        name:
+          type: string
+          description: 字段名称
+        readOnly:
+          type: boolean
+          description: 该字段是否为只读
+        manageShow:
+          type: boolean
+          description: 在PC端显示
+        weChatShow:
+          type: boolean
+          description: 在微信端显示

@@ -1,0 +1,21 @@
+.sync{
+    padding: 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+.sync p{
+    font-size: 14px;
+    line-height: 32px;
+}
+.title{
+    font-size: 18px;
+    line-height: 50px;
+}
+.start{
+    text-align: center;
+    margin: 30px 0 15px;
+}
+.subTitle{
+    font-size: 16px;
+    line-height: 50px;
+    padding-left: 20px;
+}

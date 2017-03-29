@@ -1,0 +1,102 @@
+/**
+*
+* @author Rainoy <email:rainoy.me@gmail.com>
+* @version v1.0.0
+*/
+.wrap{
+    /*padding: 10px;*/
+}
+.header span{
+    position: absolute;
+    line-height: 32px;
+}
+.tips{
+    color: #999;
+    margin-left: 45px;
+    vertical-align: 38px;
+}
+.preview{
+    margin: 10px 0;
+    position: relative;
+}
+.preview img{
+    width: 160px;
+    height: 80px;
+}
+.del{
+    display: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 100%;
+    border: 2px solid #fff;
+    position: absolute;
+    text-align: center;
+    line-height: 26px;
+    color: rgb(213, 32, 9);
+    cursor: pointer;
+}
+.del i{
+    font-size: 26px;
+}
+.del.active{
+    display: inline-block;
+}
+.preview .del{
+    left: 170px;
+    top: 50%;
+    margin-top: -20px;
+}
+.masking{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    width: 160px;
+    height: 80px;
+    line-height: 80px;
+    left: 0;
+    top: 0;
+    text-align: center;
+    display: none;
+}
+.masking.active{
+    display: block;
+}
+.imgUploadBtnWrap{
+    display: inline-block;
+}
+.imgUploadBtnWrap img{
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

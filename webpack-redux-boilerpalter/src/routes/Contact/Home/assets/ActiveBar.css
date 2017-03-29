@@ -1,0 +1,16 @@
+.header {
+  padding: 13px 15px;
+  font-size: 0;
+  line-height: 0;
+  background: #fff;
+  background: -webkit-linear-gradient(top, #ffffff, #f8f8f8);
+  background: -moz-linear-gradient(top, #ffffff, #f8f8f8);
+  background: -o-linear-gradient(top, #ffffff, #f8f8f8);
+  background: -ms-linear-gradient(top, #ffffff, #f8f8f8);
+  background: linear-gradient(top, #ffffff, #f8f8f8);
+  border-bottom: 1px solid #eaeaea;
+}
+
+.header .abtn {
+  margin-right: 10px;
+}

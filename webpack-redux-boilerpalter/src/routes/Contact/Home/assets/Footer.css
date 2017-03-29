@@ -1,0 +1,15 @@
+.footer{
+  position: absolute;
+  left: 220px;
+  right: 0;
+  bottom: 0;
+  font-size: 14px;
+  text-align: right;
+  padding: 10px 20px 15px;
+  color: #666;
+  border-top: 1px solid #ddd;
+}
+.footer label{
+  margin-right:4px;
+  margin-left:4px;
+}

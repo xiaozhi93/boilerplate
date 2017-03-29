@@ -1,0 +1,50 @@
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-size: 0;
+  line-height: 0;
+  background: #38424d;
+  background-color: #38424d;
+}
+
+.link {
+  display: inline-block;
+  width: 214px;
+  height: 56px;
+  padding: 13px 34px;
+  background-image: url(./images/logo.png);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 146px;
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  right: 20px;
+}
+
+.item,
+.name {
+  display: inline-block;
+  padding: 0 15px;
+  font-size: 14px;
+  line-height: 56px;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.name {
+  cursor: default;
+}
+
+.item:hover {
+  color: #67ad03;
+  background: #2e3339;
+}
+
+.toindex {
+  margin-left: 10px;
+}

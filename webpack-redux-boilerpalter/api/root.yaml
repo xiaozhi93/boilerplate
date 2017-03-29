@@ -1,0 +1,130 @@
+swagger: '2.0'
+info:
+  title: 微加PC后台基础数据API
+  description: 页面基础数据，包括头部、左侧导航栏的数据
+  version: "0.0.1"
+host: 127.0.0.1:8080
+schemes:
+  - http
+basePath: /api
+produces:
+  - application/json
+paths:
+  /homepage:
+    get:
+      summary: 页面基础数据
+      description: 页面顶部公司名称、左侧菜单栏数据等(请求唯一参数sessionId会以Cookie的形式传送)
+      responses:
+        200:
+          description: 请求成功
+          schema:
+            type: object
+            required:
+              - msg
+              - success
+              - obj
+            properties:
+              msg:
+                type: string
+                description: 程序返回的信息(null)
+              success:
+                type: boolean
+                description: 程序返回的状态
+              obj:
+                type: object
+                required:
+                  - companyName
+                  - homePage
+                  - leftMenu
+                properties:
+                  companyName:
+                    type: string
+                    description: 公司名称或账号名称
+                  id:
+                    type: integer
+                    description: 公司ID
+                  homePage:
+                    type: string
+                    description: 页面基础网址(例：//:www.51vj.cn)
+                  leftMenu:
+                    type: object
+                    description: 左侧应用菜单栏
+                    required:
+                      - installed
+                      - unInstalled
+                    properties:
+                      installed:
+                        type: array
+                        description: 已安装的应用
+                        items:
+                          required:
+                            - id
+                            - name
+                            - isLeaf
+                            - children
+                          properties:
+                            id:
+                              type: integer
+                              description: 一级应用的ID
+                            name:
+                              type: string
+                              description: 一级应用的名称
+                            isLeaf:
+                              type: boolean
+                              description: 该一级应用是否为叶子节点
+                            children:
+                              type: array
+                              description: 该一级应用下的二级子应用（若该一级应用为叶子节点，children可以为[]或null）
+                              items:
+                                required:
+                                  - id
+                                  - name
+                                  - isLeaf
+                                  - children
+                                properties:
+                                  id:
+                                    type: integer
+                                    description: 当前一级应用下的二级应用的ID
+                                  name:
+                                    type: string
+                                    description: 当前一级应用下的二级应用的名称
+                                  isLeaf:
+                                    type: boolean
+                                    description: 该二级应用是否为叶子节点
+                                  children:
+                                    type: array
+                                    description: 该二级应用下的三级子应用（若该二级应用为叶子节点，children可以为[]或null）
+                                    items:
+                                      required:
+                                        - id
+                                        - name
+                                      properties:
+                                        id:
+                                          type: integer
+                                          description: 当前二级应用下的三级应用的ID
+                                        name:
+                                          type: string
+                                          description: 当前二级应用下的三级应用的名称
+                      unInstalled:
+                        type: array
+                        description: 未安装的应用
+                        items:
+                          properties:
+                            id:
+                              type: integer
+                              description: 未安装应用的ID
+                            name:
+                              type: string
+                              description: 未安装应用的名称
+        500:
+          description: 程序报错
+
+          
+                      
+                                
+                        
+                      
+                    
+                  
+                
+                

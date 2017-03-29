@@ -1,0 +1,17 @@
+.bar{
+    height: 60px;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px #eaeaea solid;
+}
+.bar h1{
+    font-size: 20px;
+    line-height: 60px;
+    width: 100%;
+    text-align: center;
+}
+.back{
+    position: absolute;
+    left: 20px;
+    top: 14px;
+}

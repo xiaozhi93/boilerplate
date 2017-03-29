@@ -1,0 +1,43 @@
+.dropDown,
+.clickDown {
+  position: relative;
+  line-height: 1.5;
+}
+
+.dropDown:hover .cont,
+.clickDown.open .cont {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cont {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  color: #333;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s;
+}
+
+.menu {
+  padding: 5px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.item {
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
+.item:hover {
+  background-color: #f5f5f5;
+}

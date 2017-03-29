@@ -1,0 +1,29 @@
+.bar {
+  position: relative;
+  padding: 8px 20px;
+  background: #eaeaea;
+}
+
+.count {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  margin-top: -12px;
+  font-size: 16px;
+  color: #666;
+}
+
+.search {
+  font-size: 0;
+  line-height: 0;
+  text-align: right;
+}
+
+.input {
+  width: 250px;
+  padding: 6px 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 14px;
+  border: 1px solid #eaeaea;
+}
