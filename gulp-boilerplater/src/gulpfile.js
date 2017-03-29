@@ -11,6 +11,7 @@
  */
 var gulp = require('gulp');
 var browsersync = require('browser-sync').create();  //本地服务器
+var proxy = require('http-proxy-middleware');
 var minifyjs = require('gulp-uglify');  //压缩js
 var minifycss = require('gulp-clean-css');//清空压缩css
 var minifyimg = require('gulp-imagemin');   //压缩 PNG, JPEG, GIF and SVG images
@@ -31,7 +32,8 @@ var headerInfo = ['/**',
   ' * @version v<%= pkg.version %>',
   ' */',
   ''].join('\n');
-var proxyUrl = 'http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ';  //browser-sync proxy model url
+//http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ
+var proxyUrl = 'https://www.51vj.cn';  //browser-sync proxy model url
 
 //模块集成功能入口
 /**
@@ -143,18 +145,53 @@ gulp.task('img', function(){
 
 
 
-//其他功能拓展
+//其他功能拓展,,如何让本地的某个路径（将第三方网站变成本地的子目录）代理  /api  去代理代理目标的某个地址
 /**
 *proxy（本地服务器配置制定的代理地址,将localhost:3001代理成Proxying: http://api.map.baidu.com）
 */
 gulp.task('bsync-proxy', function() {
     browsersync.init({
-        proxy: proxyUrl,
+				https: true,
+				//server: {
+				//	baseDir: "./"
+				//},
+        //proxy: proxyUrl,
+			  //proxy:"https://www.baidu.com/",
+				proxy: {
+					target: "https://www.baidu.com/",
+					middleware: function (req, res, next) {
+						console.log(req.url);
+						next();
+					}
+				},
         files: ['*.html', 'css/*.css', 'js/*.js'],
         browser: 'chrome',
         port:3001
     });
     gulp.watch('sass/*.scss', ['sass']);
+});
+
+
+//https://www.51vj.cn/module/department/getRootAndChildDepart
+const apiProxy = proxy('/api', {
+	target: 'http://localhost:8981/index',
+	changeOrigin:true,
+	ws: true
+});
+gulp.task('http-proxy', function() {
+	browsersync.init({
+		https: true,
+		server: {
+			baseDir: "./",
+			middleware: [
+				apiProxy
+			]
+		},
+		files: ['*.html', 'css/*.css', 'js/*.js'],
+		browser: 'chrome',
+		port:3010
+	});
+	gulp.watch('sass/*.scss', ['sass']);
 });
 
 /**
