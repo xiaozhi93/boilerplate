@@ -17,6 +17,9 @@ var config={
 			session:""
 };
 //登陆并且请求数据
+app.use('/',function (req,res) {
+	res.send('user ');
+})
 app.use('/vjApi',function (req,res) {
 	//请求登陆
 	if(!config.session){
@@ -63,4 +66,4 @@ app.use('/api', function(req, res) {
 	console.log(url);
 	req.pipe(request(url)).pipe(res);
 });
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3005);

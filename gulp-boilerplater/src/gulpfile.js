@@ -12,6 +12,7 @@
 var gulp = require('gulp');
 var browsersync = require('browser-sync').create();  //本地服务器
 var proxy = require('http-proxy-middleware');
+var request = require('request');
 var minifyjs = require('gulp-uglify');  //压缩js
 var minifycss = require('gulp-clean-css');//清空压缩css
 var minifyimg = require('gulp-imagemin');   //压缩 PNG, JPEG, GIF and SVG images
@@ -152,11 +153,6 @@ gulp.task('img', function(){
 gulp.task('bsync-proxy', function() {
     browsersync.init({
 				https: true,
-				//server: {
-				//	baseDir: "./"
-				//},
-        //proxy: proxyUrl,
-			  //proxy:"https://www.baidu.com/",
 				proxy: {
 					target: "https://www.baidu.com/",
 					middleware: function (req, res, next) {
@@ -166,7 +162,7 @@ gulp.task('bsync-proxy', function() {
 				},
         files: ['*.html', 'css/*.css', 'js/*.js'],
         browser: 'chrome',
-        port:3001
+        port:3002
     });
     gulp.watch('sass/*.scss', ['sass']);
 });
@@ -178,14 +174,52 @@ const apiProxy = proxy('/api', {
 	changeOrigin:true,
 	ws: true
 });
+//登陆配置
+var config={
+	loginUrl:'https://www.51vj.cn//login',
+	url:"https://www.51vj.cn/",
+	form: {
+		drexvcd:"boxwj",
+		xdsevfx:"box123",
+		autologin:"on"
+	},
+	session:""
+};
 gulp.task('http-proxy', function() {
 	browsersync.init({
 		https: true,
 		server: {
 			baseDir: "./",
-			middleware: [
-				apiProxy
-			]
+			middleware: function (req, res, next) {
+				console.log("session"+config.session);
+				if(!config.session){
+					console.log("session1"+config.session);
+					request(
+						{
+							url: config.loginUrl,
+							method: 'POST',
+							encoding: null,
+							headers: {
+								ContentType: 'application/x-www-form-urlencoded'
+							},
+							form: config.form
+						},
+						function (err, response, body) {   //接收回调
+							config.session = response.headers['set-cookie'];  //获取set-cookie字段值
+							console.log("登陆成功"+config.session);
+							if (!err) {
+								requestSource(req,res);
+							}else {
+								console.log(err);
+							}
+						}
+					);
+				}else {
+					console.log(config.session);
+					requestSource(req,res);
+				}
+				next();
+			}
 		},
 		files: ['*.html', 'css/*.css', 'js/*.js'],
 		browser: 'chrome',
@@ -193,6 +227,22 @@ gulp.task('http-proxy', function() {
 	});
 	gulp.watch('sass/*.scss', ['sass']);
 });
+function requestSource(req,res) {
+	var url=config.url+req.url;
+	console.log("请求地址"+url);
+	request({
+		url:url,
+		headers: {
+			Cookie: config.session
+		}
+	})
+	/*req.pipe(request({
+		url:url,
+		headers: {
+			Cookie: config.session
+		}
+	})).pipe(res);*/
+}
 
 /**
  * init project task（初始化项目任务，用于拓展）
