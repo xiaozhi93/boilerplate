@@ -17,7 +17,7 @@ var minifyjs = require('gulp-uglify');  //压缩js
 var minifycss = require('gulp-clean-css');//清空压缩css
 var minifyimg = require('gulp-imagemin');   //压缩 PNG, JPEG, GIF and SVG images
 var pngquant = require('imagemin-pngquant'); //png图片压缩插件（非gulp插件）
-var sass = require('gulp-sass');         //sass解析
+//var sass = require('gulp-sass');         //sass解析
 var rename = require('gulp-rename');      //文件名重复命名
 var replace = require('gulp-replace');    //文件里面的内容替换
 var htmlreplace = require('gulp-html-replace'); //用于里面的所有的css,js替换成一个合并的css,js文件
@@ -169,11 +169,11 @@ gulp.task('bsync-proxy', function() {
 
 
 //https://www.51vj.cn/module/department/getRootAndChildDepart
-const apiProxy = proxy('/api', {
+/*const apiProxy = proxy('/api', {
 	target: 'http://localhost:8981/index',
 	changeOrigin:true,
 	ws: true
-});
+});*/
 //登陆配置
 var config={
 	loginUrl:'https://www.51vj.cn//login',
@@ -244,6 +244,86 @@ function requestSource(req,res) {
 	})).pipe(res);*/
 }
 
+
+gulp.task('proxy', function() {
+	browsersync.init({
+		https: true,
+		proxy: {
+			target: "https://www.51vj.cn/",
+			middleware: function (req, res, next) {
+				console.log(req.url);
+				next();
+			}
+		},
+		files: ['*.html', 'css/*.css', 'js/*.js'],
+		browser: 'chrome',
+		port:3020
+	});
+});
+
+gulp.task('server', function() {
+	browsersync.init({
+		https: true,
+		server: {
+			baseDir: "./",
+			middleware: function (req, res, next) {
+				//请求了四次
+				console.log("session"+config.session);
+				if (req.url === '/images/banner.png') {
+					var x = request('https://www.51vj.cn/images/banner.png');
+					//pipe在这里不能用
+					req.pipe(request({
+						url:'https://www.51vj.cn/images/banner.png',
+					})).pipe(res);
+				}
+				next();
+			}
+		},
+		files: ['*.html', 'css/*.css', 'js/*.js'],
+		browser: 'chrome',
+		port:3020
+	});
+});
+//表示localhost3010代理8981，然后3010：index代理8981
+const apiProxy = proxy('/index', {
+	target: 'http://localhost:8981',
+	changeOrigin:false,
+	ws: true
+});
+//代理可以设置多个数组
+//数据返回的是空的
+gulp.task('serverProxy', function() {
+	browsersync.init({
+		https: true,
+		server: {
+			baseDir: "./",
+			middleware: [apiProxy]
+		},
+		files: ['*.html', 'css/*.css', 'js/*.js'],
+		browser: 'chrome',
+		port:3020
+	});
+});
+//表示localhost3010代理8981，然后3010：index代理8981
+const apiProxyy = proxy('/login', {
+	target: 'https://www.51vj.cn',
+	changeOrigin:true,
+	ws: true
+});
+//代理可以设置多个数组
+//数据返回的是空的
+gulp.task('serverProxyy', function() {
+	browsersync.init({
+		https: true,
+		server: {
+			baseDir: "./",
+			middleware: [apiProxyy]
+		},
+		files: ['*.html', 'css/*.css', 'js/*.js'],
+		browser: 'chrome',
+		port:3020
+	});
+});
 /**
  * init project task（初始化项目任务，用于拓展）
  */

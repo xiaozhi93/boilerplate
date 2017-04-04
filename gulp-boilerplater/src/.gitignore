@@ -1,0 +1,14 @@
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+yarn.lock
+npm-debug.log*
+
+.svn
+.git
+.idea
+.DS_Store
+build
+node_modules
+$RECYCLE.BIN
